@@ -1,0 +1,9 @@
+banco de dadops :conjunto de tabela gerenciador de tabela de dados
+
+quem armazena os dados e as tabelas
+
+varchar -String
+
+
+
+bolean - verdadeira ou falso 
