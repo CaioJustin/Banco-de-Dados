@@ -1,0 +1,139 @@
+view e sempre consulta (apresentação dos dados )
+
+
+CREATE VIEW INGRESSOVENDIDOS AS
+
+
+
+Forma 1 (Sem inner join)
+
+CREATE VIEW INGRESSOVENDIDOS AS
+
+SELECT CODINGRESSO,DTCOMPRA,VALORPAGO,FK_EVENTO_IDEVENTO,FK_CLIENTE,NOMEEENTEO,NOME,
+FROM INGRESSO_VENDIDO I,EVENTO E,CLIENTE C
+WHERE FK_EVENTO_IDEVENTO = E.IDEVENTO AND FK_CLIENTE_CPF =CPF;
+
+
+
+fORMA 2 (iNNER JOIN)
+
+CREATE VIEW INGRESSOVENDIDOS AS
+
+
+SELECT CODINGRESSO,DTCOMPRA,VALORPAGO,FK_EVENTO_IDEVENTO,FK_CLIENTE,NOMEEENTEO,NOME,
+FROM INGRESSO_VENDIDO I,
+INNER JOIN E ON FK_EVENTO_IDEVENTO=IDEVENTO
+INNER JOIN CLIENTE C ON FK_CLIENTE_CPF=CPF;
+
+
+
+CREATE VIEW INGRESSOVENDIDOS_evento AS
+
+SELECT CODINGRESSO,DTCOMPRA,VALORPAGO,FK_EVENTO_IDEVENTO,FK_CLIENTE,NOMEEENTEO,NOME,
+FROM INGRESSO_VENDIDO I,EVENTO E,CLIENTE C
+WHERE FK_EVENTO_IDEVENTO = E.IDEVENTO AND FK_CLIENTE_CPF =CPF and FK_EVENTO_IDEVENTO=1;
+
+
+
+
+(view que apresente os dados de todos os onibus com todas as linhas que ele roda)
+
+
+======================================================Procedure=======================================
+pra chamar procedura
+
+call dbevento.ver_ingressosvendidos_evento(2)
+
+
+
+PROCEDURE IGUAL A FUNÇÃO DE C OU JAVA A MESMA COISA 	
+
+
+CREATE PROCEDURE VER_INGRESSOVENDIDOSPOR_EVENTO(P_EVENTRO INT)
+
+SELECT CODINGRESSO,DTCOMPRA,VALORPAGO,FK_EVENTO_IDEVENTO,FK_CLIENTE,NOMEEENTEO,NOME,
+FROM INGRESSO_VENDIDO I,EVENTO E,CLIENTE C
+WHERE FK_EVENTO_IDEVENTO = E.IDEVENTO AND FK_CLIENTE_CPF =CPF and FK_EVENTO_IDEVENTO=p_evento;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+eleger um ação que eu eu preciso ter parametros?filtrar
+
+
+
+
+
+=============================Função========================================================================
+
+função e procedure são parecidos em c em java 
+
+procedure e possivel fazer qualquer coisa mais nao retorna vlaor
+equivalente a um função void 
+
+
+função sempre tem que retorna um unico valor
+
+usar select pra mostra
+
+
+CREATE FUNCTION QUANTINGRESSOS_PORCLIENTE(CPFCLIENTES VARCHAR(45))
+RETURN INT
+READS SQL DATA
+BEGIN
+ RETURN(
+	SELECT COUNT(CODINGRESSO)
+	FROM INGRESSO_vendido,CLIENTE
+	WHERE CPF=FK_CLIENTE_CPF AND CPF=CPFCLIENTE);
+END$
+DELIMITER;
+
+
+
+
+
+
+
+
+
+
+=====================TRIGGERS========================================================================
+trigger e automatico triger nao se chama ela sempre e executada quando uma ação aconter
+
+ 		insert
+after & before 	alter	table 
+		delete   
+
+
+
+CREATE TRIGGER VENDAINGRESSO
+AFTER INSERT ON INGRESSO_VENDIDO
+FOR EACH ROW
+BEGIN
+	UPDATE EVENTO
+	SET QUANTMAXINGRESSOS=QUANTMAXINGRESSOS-1
+	WHERE IDEVENTO=NEW.FK_EVENTO_IDEVENTO;
+END$
+DELIMITER;
+
+
+
+
+
+
+
+
+
